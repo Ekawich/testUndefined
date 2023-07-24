@@ -10,26 +10,26 @@ const register = async (req, res) => {
         // Check if the username is exists
         const existingUser = await users.findUsername(username)
         if (existingUser) {
-            return res.status(400).json({ status:400, message:'User already exists'})
+            return res.status(400).json({ status: 400, message: 'User already exists' })
         }
 
-         // Hash the password
-         const saltRounds = 10
-         const hashedPassword = await bcrypt.hash(password, saltRounds)
-         const currentDate = await moment.getDateTimeNow()
+        // Hash the password
+        const saltRounds = 10
+        const hashedPassword = await bcrypt.hash(password, saltRounds)
+        const currentDate = await moment.getDateTimeNow()
 
-         // create new user
-         const newUser = {
+        // create new user
+        const newUser = {
             username,
             password: hashedPassword,
             currentDate
-         }
+        }
 
-         const userId = await users.createUser(newUser)
-         res.status(200).json({ status:200, message:'User has been created' })
+        const userId = await users.createUser(newUser)
+        res.status(200).json({ status: 200, message: 'User has been created' })
     } catch (err) {
         console.error('Error Register', err)
-        res.status(400).json({ message:'Internal server error'})
+        res.status(400).json({ message: 'Internal server error' })
     }
 }
 
@@ -41,13 +41,15 @@ const login = async (req, res) => {
         // Find the user
         const user = await users.findUsername(username)
         if (!user) {
-            res.status(404).json({ status:404, message:"User not found" })
+            res.status(404).json({ status: 404, message: "User not found" })
+            return
         }
 
         // Check password
         const passwordMatch = await bcrypt.compare(password, user.password)
         if (!passwordMatch) {
-            res.status(401).json({ status:401, message:"Invalid username or password"})
+            res.status(401).json({ status: 401, message: "Invalid username or password" })
+            return
         }
 
         const token = jwt.generateToken({ userId: user.id })
@@ -55,7 +57,7 @@ const login = async (req, res) => {
             id: user.id,
             username: user.username,
         }
-        res.status(200).json({ status:200 ,message: "Login success!", user: userData , token})
+        res.status(200).json({ status: 200, message: "Login success!", user: userData, token })
     } catch (err) {
         console.error(err)
         res.status(500).json({ status: 500, message: 'Internal server error' })

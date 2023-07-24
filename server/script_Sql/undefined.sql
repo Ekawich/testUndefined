@@ -4,6 +4,8 @@
 -- ------------------------------------------------------
 -- Server version	5.7.34
 
+USE undefined
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -26,10 +28,10 @@ CREATE TABLE `products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(45) DEFAULT NULL,
   `product_code` varchar(45) DEFAULT NULL,
-  `stock` varchar(45) DEFAULT NULL,
+  `stock` int(11) DEFAULT NULL,
   `create_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
-  `create_by` varchar(45) DEFAULT NULL,
+  `create_by` int(11) DEFAULT NULL,
   `flag_delete` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
