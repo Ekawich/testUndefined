@@ -7,9 +7,9 @@ const moment = require('../utils/moment')
 const getProduct = async (req, res) => {
     try {
         const data = await products.getAllProduct()
-        
+
         if (data) {
-            res.status(200).json({ status:200, data})
+            res.status(200).json({ status: 200, data })
         }
     } catch (err) {
         res.status(400).json({ message: "Internal server error" });
@@ -17,12 +17,12 @@ const getProduct = async (req, res) => {
 }
 
 const getProductById = async (req, res) => {
-    const { id } = req.params; 
+    const { id } = req.params;
 
     try {
         const productId = await products.getProductById(id)
         if (productId) {
-            res.status(200).json({ status:200, data: productId})
+            res.status(200).json({ status: 200, data: productId })
         }
     } catch (err) {
         res.status(400).json({ message: "Internal server error" });
@@ -35,7 +35,7 @@ const createProduct = async (req, res) => {
 
 
     try {
-        const existingCode = await products.findProductCode(product_code);
+        const existingCode = await products.findProductCodeCreate(product_code);
         if (existingCode) {
             res.status(500).json({
                 status: 500,
@@ -52,7 +52,7 @@ const createProduct = async (req, res) => {
             create_by,
         };
         const productId = await products.createProduct(newProduct)
-        res.status(200).json({ status:200, message: 'Product has been created', productId})
+        res.status(200).json({ status: 200, message: 'Product has been created', productId })
     } catch (err) {
         console.error("Error create product", err);
         res.status(400).json({ message: "Internal server error" });
@@ -86,7 +86,7 @@ const updateProduct = async (req, res) => {
     const currentDate = await moment.getDateTimeNow()
 
     try {
-        const existingCode = await products.findProductCode(product_code , updateId);
+        const existingCode = await products.findProductCodeUpdate(product_code, updateId);
         if (existingCode) {
             res.status(500).json({
                 status: 500,
@@ -103,11 +103,11 @@ const updateProduct = async (req, res) => {
             updateId
         }
         const productId = await products.updateProduct(updateProduct)
-        res.status(200).json({ status:200, message: 'Product has been updated', productId})
+        res.status(200).json({ status: 200, message: 'Product has been updated', productId })
     } catch (err) {
         res.status(400).json({ message: "Internal server error" });
     }
-    
+
 }
 
 module.exports = {

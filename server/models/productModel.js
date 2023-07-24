@@ -22,11 +22,26 @@ const products = {
         })
     },
 
-    findProductCode: (code, id) => {
+    findProductCodeUpdate: (code, id) => {
         return new Promise((resolve, reject) => {
             const query = "SELECT product_code FROM products WHERE product_code = ? AND id != ?";
 
             db.query(query, [code, id], (err, results) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                resolve(results[0]);
+            });
+        });
+    },
+
+    findProductCodeCreate: (code) => {
+        return new Promise((resolve, reject) => {
+            const query = "SELECT product_code FROM products WHERE product_code = ?";
+
+            db.query(query, [code], (err, results) => {
                 if (err) {
                     reject(err);
                     return;
@@ -83,7 +98,7 @@ const products = {
             const { title, product_code, stock, currentDate, updateId } = product
             const query = "UPDATE products SET title = ?, product_code = ?, stock = ?, update_date = ? WHERE id = ?"
 
-            db.query(query,[title, product_code, stock, currentDate, updateId], (err,results) => {
+            db.query(query, [title, product_code, stock, currentDate, updateId], (err, results) => {
                 if (err) {
                     reject(err)
                     return
